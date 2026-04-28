@@ -108,6 +108,12 @@ contract VirtualAddressTest is Test {
         registry.resolve(makeAddr("random"));
     }
 
+    function test_reverts_zero_walletId() public {
+        vm.prank(merchant);
+        vm.expectRevert(VirtualAddressRegistry.ZeroWalletId.selector);
+        registry.registerMaster(bytes32(0), receiver);
+    }
+
     function test_reverts_duplicate_register() public {
         vm.prank(merchant);
         registry.registerMaster(walletId, receiver);

@@ -32,8 +32,10 @@ contract VirtualAddressRegistry {
     error VirtualAlreadyMapped();
     error VirtualNotMapped();
     error ZeroAddress();
+    error ZeroWalletId();
 
     function registerMaster(bytes32 walletId, address receiver) external {
+        if (walletId == bytes32(0)) revert ZeroWalletId();
         if (receiver == address(0)) revert ZeroAddress();
         if (_wallets[walletId].owner != address(0)) revert WalletAlreadyExists();
         _wallets[walletId] = MasterWallet({owner: msg.sender, receiver: receiver, active: true});
